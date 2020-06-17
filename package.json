@@ -1,0 +1,15 @@
+{
+  "name": "node-guide",
+  "version": "1.0.0",
+  "description": "node guide",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "wpsumsun@126.com",
+  "license": "ISC"
+}
