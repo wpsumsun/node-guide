@@ -1,15 +1,10 @@
 const playerAction = process.argv[process.argv.length - 1];
-const actionsMapping = ['rock', 'scissor', 'paper'];
-const randomAction = actionsMapping[parseInt(Math.random() * 3)];
+const game = require("./game");
 
-if (randomAction === playerAction) {
-  console.log("draw");
-} else if (
-  (playerAction === 'rock' && randomAction === 'scissor') ||
-  (playerAction === 'scissor' && randomAction === 'paper') ||
-  (playerAction === 'paper' && randomAction === 'rock')
-) {
-  console.log("you lost");
-} else {
-  console.log("you win");
-}
+let count = 0;
+process.stdin.on("data", e => {
+  let action = e.toString().trim();
+  const result = game(action);
+  if (result === 1) count += 1;
+  if (count === 3) process.exit(0);
+});
