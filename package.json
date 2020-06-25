@@ -2,7 +2,7 @@
   "name": "node-guide",
   "version": "1.0.0",
   "description": "node guide",
-  "main": "index.js",
+  "main": "chapter1/plain-game/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
