@@ -19,24 +19,30 @@ app.get("/", (req, res) => {
   res.send(fs.readFileSync(__dirname + "/index.html", "utf-8"));
 });
 
-app.get("/game", (req, res) => {
-  const query = req.query;
-  const playerAction = query.action;
-  
-  if (playerWonTimes >= 3) {
-    res.status(500);
-    res.send("不和你玩了");
-    return;
+app.get("/game",
+  function(req, res, next) {
+    const query = req.query;
+    const playerAction = query.action;
+    
+    if (playerWonTimes >= 3) {
+      res.status(500);
+      res.send("不和你玩了");
+      return;
+    }
+    res.playerAction = playerAction;
+    
+    next();
+  },
+  function (req, res) {
+    const result = game(res.playerAction);
+    res.status(200);
+    if (result === 0) {
+      res.send("平局");
+    } else if (result === -1) {
+      res.send("你输了");
+    } else {
+      res.send("你赢了");
+      playerWonTimes += 1;
+    }
   }
-  
-  const result = game(playerAction);
-  res.status(200);
-  if (result === 0) {
-    res.send("平局");
-  } else if (result === -1) {
-    res.send("你输了");
-  } else {
-    res.send("你赢了");
-    playerWonTimes += 1;
-  }
-});
+);
