@@ -11,5 +11,8 @@
     "express"
   ],
   "author": "wpsumsun@126.com",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
