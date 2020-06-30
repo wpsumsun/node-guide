@@ -34,7 +34,10 @@ const createBlog = (postData) => {
 };
 
 const updateBlog = (id, postData = {}) => {
-  console.log("id", id, postData);
+  return true;
+};
+
+const removeBlog = (id) => {
   return true;
 };
 
@@ -43,5 +46,6 @@ module.exports = {
   getList,
   getBlog,
   createBlog,
-  updateBlog
+  updateBlog,
+  removeBlog
 };
