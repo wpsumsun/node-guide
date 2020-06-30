@@ -17,6 +17,18 @@ const getList = (author, keyword) => {
   ];
 };
 
+const getBlog = (id) => {
+  return {
+    id: 1,
+    title: "标题1",
+    content: "内容1",
+    createdTime: 1593530757350,
+    author: "张三",
+  };
+};
+
+
 module.exports = {
-  getList
+  getList,
+  getBlog
 };
