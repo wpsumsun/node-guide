@@ -27,8 +27,21 @@ const getBlog = (id) => {
   };
 };
 
+const createBlog = (postData) => {
+  return {
+    id: 3,
+  };
+};
+
+const updateBlog = (id, postData = {}) => {
+  console.log("id", id, postData);
+  return true;
+};
+
 
 module.exports = {
   getList,
-  getBlog
+  getBlog,
+  createBlog,
+  updateBlog
 };

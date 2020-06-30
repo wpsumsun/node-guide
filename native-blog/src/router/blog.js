@@ -1,4 +1,4 @@
-const { getList, getBlog } = require("../controller/blog");
+const { getList, getBlog, createBlog, updateBlog } = require("../controller/blog");
 const { SuccessModel, ErrorModel } = require("../model/responseModel");
 
 const handleBlogRouter = (req, res) => {
@@ -19,17 +19,16 @@ const handleBlogRouter = (req, res) => {
   }
   
   //新建博客
-  if (method === "POST" && req.path === "/api/blog/add") {
-    return {
-      msg: "新建博客"
-    }
+  if (method === "POST" && req.path === "/api/blog/create") {
+    const blog = createBlog(req.body);
+    return new SuccessModel(blog);
   }
   
   //更新博客
   if (method === "POST" && req.path === "/api/blog/update") {
-    return {
-      msg: "更新博客"
-    }
+    const { id } = req.query;
+    const result = updateBlog(id, req.body);
+    return new SuccessModel(result);
   }
   
   //删除博客
