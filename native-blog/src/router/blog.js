@@ -7,8 +7,9 @@ const handleBlogRouter = (req, res) => {
   //获取博客列表
   if (method === "GET" && req.path === "/api/blog/list") {
     const { author = "", keyword = "" } = req.query || {};
-    const listData = getList(author, keyword);
-    return new SuccessModel(listData);
+    return getList(author, keyword).then(listData => {
+      return new SuccessModel(listData);
+    });
   }
   
   //获取博客详情
