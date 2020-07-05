@@ -1,8 +1,8 @@
 const { exec } = require("../db/mysql");
 const getList = (author, keyword) => {
   let sql = `select id, title, content, createtime, author from blogs where 1=1 `;
-  if (author) sql += `and author like %author%`;
-  if (keyword) sql += `and title like %keyword%`;
+  if (author) sql += `and author like '%${author}%' `;
+  if (keyword) sql += `and title like '%${keyword}%' `;
   sql += `order by createtime desc;`;
   return exec(sql);
 };
