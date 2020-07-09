@@ -32,6 +32,14 @@ const serverHandler = (req, res) => {
   req.path = url.split("?")[0];
   req.query = querystring.parse(url.split("?")[1]);
   
+  req.cookie = {};
+  const cookieString = req.headers.cookie || "";
+  cookieString.split(";").forEach(item => {
+    if (!item) return;
+    const [key, value] = item.split("=");
+    req.cookie[key.trim()] = value.trim();
+  });
+  
   getPostData(req).then(postData => {
     req.body = postData;
   
