@@ -8,27 +8,33 @@ const getList = (author, keyword) => {
 };
 
 const getBlog = (id) => {
-  return {
-    id: 1,
-    title: "标题1",
-    content: "内容1",
-    createdTime: 1593530757350,
-    author: "张三",
-  };
+  const sql = `select * from blogs where id=${id};`;
+  return exec(sql).then(rows => {
+    return rows[0];
+  });
 };
 
-const createBlog = (postData) => {
-  return {
-    id: 3,
-  };
+const createBlog = ({ title = "", content = "", author = "" }) => {
+  const createtime = Date.now();
+  const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', '${createtime}', '${author}');`;
+  return exec(sql).then(innsertData => {
+    return { id: innsertData.insertId };
+  });
 };
 
-const updateBlog = (id, postData = {}) => {
-  return true;
+const updateBlog = ({ id, title, content, author }) => {
+  const sql = `update blogs set title='${title}', content='${content}' where id=${id} and author='${author}';`;
+  return exec(sql).then(result => {
+    return result.affectedRows > 0
+  });
 };
 
-const removeBlog = (id) => {
-  return true;
+const removeBlog = ({id, author}) => {
+  // 实际项目中应该使用逻辑删除
+  const sql = `delete from blogs where id=${id} and author='${author}';`;
+  return exec(sql).then(result => {
+    return result.affectedRows > 0
+  });
 };
 
 

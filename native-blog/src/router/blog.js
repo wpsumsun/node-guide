@@ -15,27 +15,33 @@ const handleBlogRouter = (req, res) => {
   //获取博客详情
   if (method === "GET" && req.path === "/api/blog/detail") {
     const { id } = req.query;
-    const blog = getBlog(id);
-    return new SuccessModel(blog);
+    return getBlog(id).then(blog => {
+      return new SuccessModel(blog);
+    });
   }
   
   //新建博客
   if (method === "POST" && req.path === "/api/blog/create") {
-    const blog = createBlog(req.body);
-    return new SuccessModel(blog);
+    return createBlog(req.body).then(res => {
+      return new SuccessModel(res);
+    });
   }
   
   //更新博客
   if (method === "POST" && req.path === "/api/blog/update") {
-    const { id } = req.query;
-    const result = updateBlog(id, req.body);
-    return new SuccessModel(result);
+    return updateBlog(req.body).then(result => {
+      if (result) return new SuccessModel(result);
+      return new ErrorModel(result)
+    });
   }
   
   //删除博客
   if (method === "DELETE" && req.path === "/api/blog/delete") {
-    const { id } = req.query;
-    const result = removeBlog(id);
+    const { id, author } = req.query;
+    return removeBlog({id, author}).then(result => {
+      if (result) return new SuccessModel(result);
+      return new ErrorModel(result)
+    });
     return new SuccessModel(result);
   }
 };
