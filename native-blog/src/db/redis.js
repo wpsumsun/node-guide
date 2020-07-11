@@ -29,9 +29,8 @@ function get(key) {
       } catch (err) {
         resolve(value);
       }
-        
       }
-    });
+    );
   });
 }
 
