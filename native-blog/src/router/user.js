@@ -1,5 +1,6 @@
 const { login } = require("../controller/user");
 const { SuccessModel, ErrorModel } = require("../model/responseModel");
+const { set, get } = require("../db/redis");
 
 const handleUserRouter = (req, res) => {
   const method = req.method;
@@ -11,6 +12,7 @@ const handleUserRouter = (req, res) => {
       if (username) {
         req.session.username = username;
         req.session.realname = realname;
+        set(req.sessionId, req.session);
         return new SuccessModel();
       }
       return new ErrorModel();
