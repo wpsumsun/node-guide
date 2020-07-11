@@ -1,6 +1,7 @@
 const querystring = require("querystring");
 const handleBlogRouter = require("./src/router/blog");
 const handleUserRouter = require("./src/router/user");
+const { get, set } = require("./src/db/redis");
 
 const SESSION_DADA = {};
 
@@ -50,21 +51,22 @@ const serverHandler = (req, res) => {
   
   let userId = req.cookie.userId;
   let needSetCookie = false;
-  if (userId) {
-    if (!SESSION_DADA[userId]) {
-      SESSION_DADA[userId] = {};
-    }
-  } else {
+  if (!userId) {
     needSetCookie = true;
     userId = `${Date.now()}`;
-    SESSION_DADA[userId] = {};
+    set(userId, {});
   }
-  
-  req.session = SESSION_DADA[userId];
-  
-  getPostData(req).then(postData => {
+  req.sessionId = userId;
+  get(req.sessionId).then(sessionData => {
+    if (sessionData == null) {
+      set(req.sessionId, {});
+    } else {
+      req.session = sessionData;
+    }
+    return getPostData(req)
+  }).then(postData => {
     req.body = postData;
-  
+    
     const blogDataResult = handleBlogRouter(req, res);
     if (blogDataResult) {
       blogDataResult.then(blogData => {
@@ -75,7 +77,7 @@ const serverHandler = (req, res) => {
       });
       return;
     }
-  
+    
     const userData = handleUserRouter(req, res);
     if (userData) {
       userData.then(blogData => {
@@ -86,11 +88,13 @@ const serverHandler = (req, res) => {
       });
       return;
     }
-  
+    
     // 404
     res.writeHead(404, { "content-type": "text/plain;charset=utf-8" });
     res.end("走失了~");
   });
 };
+  
+
 
 module.exports = serverHandler;
