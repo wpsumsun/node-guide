@@ -66,7 +66,6 @@ const serverHandler = (req, res) => {
     return getPostData(req)
   }).then(postData => {
     req.body = postData;
-    
     const blogDataResult = handleBlogRouter(req, res);
     if (blogDataResult) {
       blogDataResult.then(blogData => {
