@@ -2,6 +2,7 @@ const querystring = require("querystring");
 const handleBlogRouter = require("./src/router/blog");
 const handleUserRouter = require("./src/router/user");
 const { get, set } = require("./src/db/redis");
+const { access } = require("./src/utils/log");
 
 const SESSION_DADA = {};
 
@@ -38,6 +39,9 @@ const getPostData = function(req) {
 const serverHandler = (req, res) => {
   res.setHeader("Content-type", "application/json");
   const url = req.url;
+  
+  access(`${req.method}--${url}--${Date.now()}`);
+  
   req.path = url.split("?")[0];
   req.query = querystring.parse(url.split("?")[1]);
   
