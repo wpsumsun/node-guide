@@ -13,4 +13,17 @@ router.get("/list", (req, res, next) => {
   });
 });
 
+router.get("/session-test", (req, res, next) => {
+  const session = req.session;
+  if (!session.viewCount) {
+    session.viewCount = 0;
+  }
+  session.viewCount++;
+  res.json({
+    viewCount: session.viewCount
+  })
+});
+
+
+
 module.exports = router;
