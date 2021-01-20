@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var fs = require('fs');
 
 
 var indexRouter = require('./routes/index');
@@ -16,7 +17,15 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+const NODE_ENV = process.env.NODE_ENV;
+if (NODE_ENV !== "production") {
+  app.use(logger('dev'));
+} else {
+  const logFileName = path.join(__dirname, "logs", "access.log");
+  const accessLogStream = fs.createWriteStream(logFileName, { flags: 'a' });
+  app.use(logger('combined', { stream: accessLogStream }));
+}
+// app.use(logger('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
